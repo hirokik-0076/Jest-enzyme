@@ -45,61 +45,65 @@ describe('<App />', () => {
     wrapper.setState({
       inputValue: 'XXX',
     });
+    //実行
     //handleClick()を呼び出す
     wrapper.instance().handleClick();
+    //検証
     //適切な引数でspy化したsetStateが呼び出されていればOK
     expect(setStateSpy).toHaveBeenCalledWith({
       //以下の引数とともにチェックを行なっている
       text: 'XXX',
       inputValue: '',
     });
-
-    it('<App />のスナップショット', () => {
-      const tree = renderer
-        .create(<App />)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
   });
 
-  /**
-   * Titleコンポーネントのテスト
-   */
-  describe('<Title />', () => {
-    it('受け取ったpropsの値を表示する事', () => {
-      /**
-     * 'React'という値をtextに渡して、
-     * Titleコンポーネントをshallowレンダリング
-     */
-      const wrapper = shallow(<Title text={'React'} />);
-      // == 検証 ==
-      /** レンダリングされたテキストが'Hello React'であればOK */
-      expect(wrapper.text()).toBe('Hello React');
-      //==実行
-      //props.textの値を'Worldに変更
-      wrapper.setProps({ text: 'World' });
-      //==検証==
-      //レンダリングされたテキストがHello WorldであればOK
-      expect(wrapper.text()).toBe('Hello World');
-    });
-  })
+  it('<App />のスナップショット', () => {
+    const tree = renderer
+      .create(<App />)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+});
 
-  describe('<Input />', () => {
-    it('changeイベント発火時にコールバック関数が呼び出される事', () => {
-      //準備
-      //mock関数としてhandleChangeSpyを作成
-      //親コンポーネントからもらうmethodは
-      const handlechangeSpy = jest.fn();//jest.fin()を使ってmock関数として作成します。
-      //mock関数handleChangeSpyを渡して、Inputコンポーネントをshalloレンダリング
-      const wrapper = shallow(< Input handelChange={handlechangeSpy} />);
-      //ダミーなeventオブジェクトを作成
-      const event = { target: { value: 'XXX' } };
-      //実行
-      //input要素に対してchangeイベントを発火させる
-      wrapper.find('input').simulate('change', event);//イベントを発火させる為にsimulate()メソッドを用います//その際にeventメソッドを作成して渡しています。
-      //検証
-      //mock関数'handleChangeSpy'がXXXという引数で呼び出さればOK
-      expect(handlechangeSpy).toHaveBeenCalledWith('XXX');
-    });
-  })
+/**
+ * Titleコンポーネントのテスト
+ */
+describe('<Title />', () => {
+  it('受け取ったpropsの値を表示する事', () => {
+    /**
+   * 'React'という値をtextに渡して、
+   * Titleコンポーネントをshallowレンダリング
+   */
+    const wrapper = shallow(<Title text={'React'} />);
+    // == 検証 ==
+    /** レンダリングされたテキストが'Hello React'であればOK */
+    expect(wrapper.text()).toBe('Hello React');
+    //==実行
+    //props.textの値を'Worldに変更
+    wrapper.setProps({ text: 'World' });
+    //==検証==
+    //レンダリングされたテキストがHello WorldであればOK
+    expect(wrapper.text()).toBe('Hello World');
+  });
+})
+/**
+ * Inputコンポーネントのテスト
+ */
+describe('<Input />', () => {
+  it('changeイベント発火時にコールバック関数が呼び出される事', () => {
+    //準備
+    //mock関数としてhandleChangeSpyを作成
+    //親コンポーネントからもらうmethodは
+    const handleChangeSpy = jest.fn();//jest.fin()を使ってmock関数として作成します。
+    //mock関数handleChangeSpyを渡して、Inputコンポーネントをshalloレンダリング
+    const wrapper = shallow(< Input handleChange={handleChangeSpy} />);
+    //ダミーなeventオブジェクトを作成
+    const event = { target: { value: 'aaa' } };
+    //実行
+    //input要素に対してchangeイベントを発火させる
+    wrapper.find('input').simulate('change', event);//イベントを発火させる為にsimulate()メソッドを用います//その際にeventメソッドを作成して渡しています。
+    //検証
+    //mock関数'handleChangeSpy'がXXXという引数で呼び出さればOK
+    expect(handleChangeSpy).toHaveBeenCalledWith('aaa');
+  });
 })
